@@ -50,7 +50,12 @@ export default {
     },
     //  1级分类发生变化时回调
     async handler1(){
+      this.list2=[]
+      this.list3=[]
+      this.cForm.category2Id=''
+      this.cForm.category3Id=''
       const {category1Id}=this.cForm
+      this.$emit('getCategoryId',{categoryId:category1Id,level:1})
       let result=await this.$API.attr.reqCategory2List(category1Id)
       if(result.code==200){
         this.list2=result.data
@@ -58,7 +63,10 @@ export default {
     },
     //  2级分类发生变化时回调
     async handler2(){
+      this.list3=[]
+      this.cForm.category3Id=''
       const {category2Id}=this.cForm
+      this.$emit('getCategoryId',{categoryId:category2Id,level:2})
       let result=await this.$API.attr.reqCategory3List(category2Id)
       if(result.code==200){
         this.list3=result.data
@@ -66,7 +74,8 @@ export default {
     },
     //  2级分类发生变化时回调
     handler3(){
-
+      const {category3Id}=this.cForm
+      this.$emit('getCategoryId',{categoryId:category3Id,level:3})
     }
   },
 }
