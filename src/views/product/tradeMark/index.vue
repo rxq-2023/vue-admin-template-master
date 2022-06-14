@@ -14,7 +14,7 @@
       </el-table-column>
       <el-table-column prop="prop" label="操作" width="width">
         <template slot-scope="{row,$index}">
-          <el-button type="warning" icon="el-icon-edit" size="mini" @click="updateTradeMark">修改</el-button>
+          <el-button type="warning" icon="el-icon-edit" size="mini" @click="updateTradeMark(row)">修改</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
         </template>
       </el-table-column>
@@ -32,7 +32,7 @@
       @size-change="handleSizeChange"
     ></el-pagination>
     <!--  对话框 -->
-    <el-dialog title="添加品牌" :visible.sync="dialogFormVisible">
+    <el-dialog :title="tmForm.id?'修改品牌':'添加品牌'" :visible.sync="dialogFormVisible">
       <el-form style="width: 80%" :model="tmForm">
         <el-form-item label="品牌名称" label-width="100px">
           <el-input autocomplete="off" v-model="tmForm.tmName"></el-input>
@@ -102,13 +102,17 @@ export default {
       //  发请求
       let result = await this.$API.tradeMark.reqAddOrUpdateTradeMark(this.tmForm)
       if(result.code==200){
-        this.$message(this.tmForm.id?'修改品牌成功':'添加品牌成功')
-        this.getPageList()
+        this.$message({
+          type:'success',
+          message:this.tmForm.id?'修改品牌成功':'添加品牌成功'
+        })
+        this.getPageList(this.tmForm.id?this.page:1)
       }
     },
     //  修改某一品牌
-    updateTradeMark() {
+    updateTradeMark(row) {
       this.dialogFormVisible = true
+      this.tmForm={...row}
     },
     //  图片上传成功
     handleAvatarSuccess(res, file) {
