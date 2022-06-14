@@ -22,3 +22,10 @@ export const reqCategory3List=(category2Id)=>{
     methods:'get'
   })
 }
+//  获取平台属性
+export const reqAttrList=(category1Id,category2Id,category3Id)=>{
+  return request({
+    url:`/admin/product/attrInfoList/${category1Id}/${category2Id}/${category3Id}`,
+    methods:'get'
+  })
+}
