@@ -140,7 +140,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        //  删除接口调用失败
         let result = await this.$API.tradeMark.reqDeleteTradeMark(row.id)
         if(result.code == 200){
           this.$message({

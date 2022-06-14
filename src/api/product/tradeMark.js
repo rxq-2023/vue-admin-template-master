@@ -25,10 +25,10 @@ export const reqAddOrUpdateTradeMark=(tradeMark)=>{
   }
 }
 
-//  删除品牌
+//  删除品牌 P133
 export const reqDeleteTradeMark=(id)=>{
   return request({
     url:`/admin/product/baseTrademark/remove/${id}`,
-    methods:'delete'
+    method:'delete'
   })
 }
