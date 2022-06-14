@@ -15,7 +15,7 @@
       <el-table-column prop="prop" label="操作" width="width">
         <template slot-scope="{row,$index}">
           <el-button type="warning" icon="el-icon-edit" size="mini" @click="updateTradeMark(row)">修改</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTradeMark(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { reqDeleteTradeMark } from '@/api/product/tradeMark'
+
 export default {
   name: 'tradeMark',
   data() {
@@ -80,7 +82,7 @@ export default {
           { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
         logoUrl: [
-          { required: true, message: '请选择品牌图片'}
+          { required: true, message: '请选择品牌图片' }
         ]
       }
     }
@@ -108,30 +110,55 @@ export default {
     },
     //  对话框——确认(添加/修改 品牌）
     addOrUpdateTradeMark() {
-      this.$refs['ruleForm'].validate(async (success)=>{
-        if(success){
+      this.$refs['ruleForm'].validate(async(success) => {
+        if (success) {
           this.dialogFormVisible = false
           //  发请求
           let result = await this.$API.tradeMark.reqAddOrUpdateTradeMark(this.tmForm)
-          if(result.code==200){
+          if (result.code == 200) {
             this.$message({
-              type:'success',
-              message:this.tmForm.id?'修改品牌成功':'添加品牌成功'
+              type: 'success',
+              message: this.tmForm.id ? '修改品牌成功' : '添加品牌成功'
             })
-            this.getPageList(this.tmForm.id?this.page:1)
+            this.getPageList(this.tmForm.id ? this.page : 1)
           }
-        }else{
+        } else {
           console.log('error submit')
           return false
         }
       })
-
-
     },
     //  修改某一品牌
     updateTradeMark(row) {
       this.dialogFormVisible = true
-      this.tmForm={...row}
+      this.tmForm = { ...row }
+    },
+    //  删除品牌操作
+    deleteTradeMark(row) {
+      this.$confirm(`确定删除${row.tmName}?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        //  删除接口调用失败
+        let result = await this.$API.tradeMark.reqDeleteTradeMark(row.id)
+        if(result.code == 200){
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.getPageList(this.list.length>1?this.page:this.page-1)
+        }else{
+          console.log(result)
+        }
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+
     },
     //  图片上传成功
     handleAvatarSuccess(res, file) {
@@ -150,7 +177,8 @@ export default {
       }
       return isJPG && isLt2M
     }
-  },
+  }
+  ,
   mounted() {
     this.getPageList()
   }
