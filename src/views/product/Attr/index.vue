@@ -26,9 +26,9 @@
 
       </div>
       <div v-show="!isShowTable">
-        <el-form :inline="true" ref="form" label-width="80px">
+        <el-form :inline="true" ref="form" label-width="80px" :model="attrInfo">
           <el-form-item label="属性名">
-            <el-input placeholder="请输入属性名"></el-input>
+            <el-input placeholder="请输入属性名" v-model="attrInfo.attrName"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="primary" icon="el-icon-plus">添加属性值</el-button>
@@ -55,6 +55,17 @@ export default {
       category3Id:'',
       attrList:[],
       isShowTable:true,//控制表格显示与隐藏
+      attrInfo:{
+        attrName:'',
+        attrValueList:[
+          {
+            attrId:0,
+            valueName:'string',
+          }
+        ],
+        categoryId:0,
+        categoryLevel:3,
+      },
     }
   },
   methods:{

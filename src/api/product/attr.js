@@ -29,3 +29,11 @@ export const reqAttrList=(category1Id,category2Id,category3Id)=>{
     methods:'get'
   })
 }
+//  添加属性与属性值
+export const reqAddAttr=(data)=>{
+  return request({
+    url:`/admin/product/saveAttrInfo`,
+    methods:'post',
+    data:data
+  })
+}
