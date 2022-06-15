@@ -35,9 +35,11 @@
         <el-button @click="isShowTable=true">取消</el-button>
         <el-table style="width: 100%;margin: 20px 0px" border :data="attrInfo.attrValueList">
           <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
-          <el-table-column label="属性值名称" width="width" align="center" prop="prop">
+          <el-table-column label="属性值名称" width="width" prop="prop">
             <template slot-scope="{row,$index}">
-              <el-input placeholder="请输入属性值名称" v-model="row.valueName" size="mini"></el-input>
+              <el-input v-if="row.flag" @blur="row.flag=false" @keyup.native.enter="row.flag=false"
+                        placeholder="请输入属性值名称" v-model="row.valueName" size="mini"></el-input>
+              <span v-else @click="row.flag=true" style="display: block">{{row.valueName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="width" align="center" prop="prop">
@@ -98,8 +100,9 @@ export default {
     //  添加属性值
     addAttrValue(){
       this.attrInfo.attrValueList.push({
-        attrId:undefined,
-        valueName:''
+        attrId:this.attrInfo.id,
+        valueName:'',
+        flag:true,
       })
     },
     //  添加属性
