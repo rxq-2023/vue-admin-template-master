@@ -31,12 +31,20 @@
             <el-input placeholder="请输入属性名" v-model="attrInfo.attrName"></el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" icon="el-icon-plus">添加属性值</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="addAttrValue" :disabled="!attrInfo.attrName">添加属性值</el-button>
         <el-button @click="isShowTable=true">取消</el-button>
-        <el-table style="width: 100%;margin: 20px 0px" border>
+        <el-table style="width: 100%;margin: 20px 0px" border :data="attrInfo.attrValueList">
           <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
-          <el-table-column label="属性值名称" width="width" align="center" prop="prop"></el-table-column>
-          <el-table-column label="操作" width="width" align="center" prop="prop"></el-table-column>
+          <el-table-column label="属性值名称" width="width" align="center" prop="prop">
+            <template slot-scope="{row,$index}">
+              <el-input placeholder="请输入属性值名称" v-model="row.valueName" size="mini"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="width" align="center" prop="prop">
+            <template slot-scope="{row,$index}">
+              <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <el-button type="primary">保存</el-button>
         <el-button @click="isShowTable=true">取消</el-button>
@@ -58,10 +66,6 @@ export default {
       attrInfo:{
         attrName:'',
         attrValueList:[
-          {
-            attrId:0,
-            valueName:'string',
-          }
         ],
         categoryId:0,
         categoryLevel:3,
@@ -89,6 +93,13 @@ export default {
       if(result.code==200){
         this.attrList=result.data
       }
+    },
+    //  添加属性值
+    addAttrValue(){
+      this.attrInfo.attrValueList.push({
+        attrId:undefined,
+        valueName:''
+      })
     },
   },
 }
