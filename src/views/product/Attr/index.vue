@@ -4,25 +4,43 @@
       <CategorySelect @getCategoryId="getCategoryId"></CategorySelect>
     </el-card>
     <el-card>
-      <el-button type="primary" icon="el-icon-plus">添加属性</el-button>
-      <el-table style="width: 100%" border :data="attrList">
-        <el-table-column type="index" align="center" label="序号" width="80">
-        </el-table-column>
-        <el-table-column prop="attrName" label="属性名称" width="150">
-        </el-table-column>
-        <el-table-column prop="prop" label="属性值列表" width="width">
-          <template slot-scope="{row,$index}">
-            <el-tag type="success" v-for="(attrValue,index) in row.attrValueList" :key="attrValue.id" style="margin: 0px 20px">{{attrValue.valueName}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="prop" label="操作" width="150">
-          <template slot-scope="{row,$index}">
-            <el-button type="warning" icon="el-icon-edit" size="mini"></el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div v-show="isShowTable" >
+        <el-button type="primary" icon="el-icon-plus" :disabled="!category3Id" @click="isShowTable=false">添加属性</el-button>
+        <el-table style="width: 100%" border :data="attrList">
+          <el-table-column type="index" align="center" label="序号" width="80">
+          </el-table-column>
+          <el-table-column prop="attrName" label="属性名称" width="150">
+          </el-table-column>
+          <el-table-column prop="prop" label="属性值列表" width="width">
+            <template slot-scope="{row,$index}">
+              <el-tag type="success" v-for="(attrValue,index) in row.attrValueList" :key="attrValue.id" style="margin: 0px 20px">{{attrValue.valueName}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="prop" label="操作" width="150">
+            <template slot-scope="{row,$index}">
+              <el-button type="warning" icon="el-icon-edit" size="mini" @click="isShowTable=false"></el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
+      </div>
+      <div v-show="!isShowTable">
+        <el-form :inline="true" ref="form" label-width="80px">
+          <el-form-item label="属性名">
+            <el-input placeholder="请输入属性名"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" icon="el-icon-plus">添加属性值</el-button>
+        <el-button @click="isShowTable=true">取消</el-button>
+        <el-table style="width: 100%;margin: 20px 0px" border>
+          <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
+          <el-table-column label="属性值名称" width="width" align="center" prop="prop"></el-table-column>
+          <el-table-column label="操作" width="width" align="center" prop="prop"></el-table-column>
+        </el-table>
+        <el-button type="primary">保存</el-button>
+        <el-button @click="isShowTable=true">取消</el-button>
+      </div>
     </el-card>
   </div>
 </template>
@@ -36,6 +54,7 @@ export default {
       category2Id:'',
       category3Id:'',
       attrList:[],
+      isShowTable:true,//控制表格显示与隐藏
     }
   },
   methods:{
