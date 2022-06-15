@@ -5,7 +5,7 @@
     </el-card>
     <el-card>
       <div v-show="isShowTable" >
-        <el-button type="primary" icon="el-icon-plus" :disabled="!category3Id" @click="isShowTable=false">添加属性</el-button>
+        <el-button type="primary" icon="el-icon-plus" :disabled="!category3Id" @click="addAttr">添加属性</el-button>
         <el-table style="width: 100%" border :data="attrList">
           <el-table-column type="index" align="center" label="序号" width="80">
           </el-table-column>
@@ -100,6 +100,17 @@ export default {
         attrId:undefined,
         valueName:''
       })
+    },
+    //  添加属性
+    addAttr(){
+      this.isShowTable=false
+      this.attrInfo= {
+        attrName: '',
+        attrValueList: [],
+        categoryId: this.category3Id,
+        categoryLevel: 3,
+      }
+
     },
   },
 }
