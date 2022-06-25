@@ -38,8 +38,8 @@
           <el-table-column label="属性值名称" width="width" prop="prop">
             <template slot-scope="{row,$index}">
               <el-input v-if="row.flag" @blur="toLook(row)" @keyup.native.enter="row.flag=false"
-                        placeholder="请输入属性值名称" v-model="row.valueName" size="mini"></el-input>
-              <span v-else @click="row.flag=true" style="display: block">{{row.valueName}}</span>
+                        placeholder="请输入属性值名称" v-model="row.valueName" size="mini" :ref="$index"></el-input>
+              <span v-else @click="toEdit(row,$index)" style="display: block">{{row.valueName}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="width" align="center" prop="prop">
@@ -104,6 +104,9 @@ export default {
         valueName:'',
         flag:true,
       })
+      this.$nextTick(()=>{
+        this.$refs[this.attrInfo.attrValueList.length-1].focus()
+      })
     },
     //  添加属性
     addAttr(){
@@ -143,6 +146,15 @@ export default {
         return
       }
       row.flag=false
+    },
+    //  修改属性值（点击span变成input 编辑模式）
+    toEdit(row,index){
+      row.flag=true
+      //  nextTick 当节点渲染完毕了 会执行一次
+      this.$nextTick(()=>{
+        this.$refs[index].focus()
+      })
+
     },
   },
 }
