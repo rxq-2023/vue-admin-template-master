@@ -37,7 +37,7 @@
           <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
           <el-table-column label="属性值名称" width="width" prop="prop">
             <template slot-scope="{row,$index}">
-              <el-input v-if="row.flag" @blur="row.flag=false" @keyup.native.enter="row.flag=false"
+              <el-input v-if="row.flag" @blur="toLook(row)" @keyup.native.enter="row.flag=false"
                         placeholder="请输入属性值名称" v-model="row.valueName" size="mini"></el-input>
               <span v-else @click="row.flag=true" style="display: block">{{row.valueName}}</span>
             </template>
@@ -120,7 +120,26 @@ export default {
       this.isShowTable=false
       //  深拷贝
       this.attrInfo=cloneDeep(row)
-    }
+    },
+    //  添加属性值 失焦时回调
+    toLook(row) {
+      //  属性值为空
+      if(row.valueName.trim()==''){
+        this.$message('属性值不能为空')
+        return
+      }
+      // 属性值重复
+      let isRepeat=this.attrInfo.attrValueList.some(item=>{
+        if(row!==item){
+          return row.valueName==item.valueName
+        }
+      })
+      if(isRepeat){
+        this.$message('属性值不能重复')
+        return
+      }
+      row.flag=false
+    },
   },
 }
 </script>
