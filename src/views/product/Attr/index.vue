@@ -120,6 +120,10 @@ export default {
       this.isShowTable=false
       //  深拷贝
       this.attrInfo=cloneDeep(row)
+      this.attrInfo.attrValueList.forEach(item=>{
+        //  响应式添加 Vue.set
+        this.$set(item,'flag',false)
+      })
     },
     //  添加属性值 失焦时回调
     toLook(row) {
