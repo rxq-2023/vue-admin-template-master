@@ -50,7 +50,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="addOrUpdateAttr">保存</el-button>
         <el-button @click="isShowTable=true">取消</el-button>
       </div>
     </el-card>
@@ -59,6 +59,7 @@
 
 <script>
 import cloneDeep from 'lodash/cloneDeep'
+import { reqAddOrUpdateAttr } from '@/api/product/attr'
 export default {
   name: 'Attr',
   data(){
@@ -162,6 +163,25 @@ export default {
     deleteAttrValue(index){
       this.attrInfo.attrValueList.splice(index,1)
     },
+    //  保存(提交至服务器)
+    async addOrUpdateAttr(){
+      //  过滤掉空的属性值，并删除flag
+      this.attrInfo.attrValueList=this.attrInfo.attrValueList.filter(item=>{
+        if(item.valueName!=''){
+          delete item.flag
+          return true
+        }
+      })
+      //  发请求
+      try {
+        await this.$API.attr.reqAddOrUpdateAttr(this.attrInfo)
+        this.isShowTable=true
+        this.$message({type:'success',message:'保存成功'})
+        this.getAttrList()
+      }catch (e){
+        console.log(e)
+      }
+    }
   },
 }
 </script>

@@ -5,35 +5,35 @@ import request from '@/utils/request'
 export const reqCategory1List=()=>{
   return request({
     url:`/admin/product/getCategory1`,
-    methods:'get'
+    method:'get'
   })
 }
 //  获取二级分类
 export const reqCategory2List=(category1Id)=>{
   return request({
     url:`/admin/product/getCategory2/${category1Id}`,
-    methods:'get'
+    method:'get'
   })
 }
 //  获取三级分类
 export const reqCategory3List=(category2Id)=>{
   return request({
     url:`/admin/product/getCategory3/${category2Id}`,
-    methods:'get'
+    method:'get'
   })
 }
 //  获取平台属性
 export const reqAttrList=(category1Id,category2Id,category3Id)=>{
   return request({
     url:`/admin/product/attrInfoList/${category1Id}/${category2Id}/${category3Id}`,
-    methods:'get'
+    method:'get'
   })
 }
 //  添加属性与属性值
-export const reqAddAttr=(data)=>{
+export const reqAddOrUpdateAttr=(data)=>{
   return request({
     url:`/admin/product/saveAttrInfo`,
-    methods:'post',
+    method:'post',
     data:data
   })
 }
